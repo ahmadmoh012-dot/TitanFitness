@@ -54,11 +54,13 @@ export class SessionApiService {
       studioId: session.studioId,
       trainerId: session.trainerId,
       sessionDate: session.sessionDate,
-      startTime: session.startTime,
+      startTime: this.toApiTime(session.startTime),
       durationInMinutes: session.durationMinutes,
       capacityLimit: session.capacityLimit,
       description: session.description
-    }).pipe(map(result => result.id));
+    }).pipe(
+      map(result => result.id)
+    );
   }
 
   getClassSessionById(sessionId: number): Observable<SessionDetails> {
@@ -106,5 +108,33 @@ export class SessionApiService {
       waitlistCount: item.waitlistCount,
       status: item.status
     };
+  }
+  private toApiTime(value: string): string {
+    const trimmed = value.trim();
+
+    if (/^\d{2}:\d{2}:\d{2}$/.test(trimmed))
+      return trimmed;
+
+    if (/^\d{2}:\d{2}$/.test(trimmed))
+      return `${trimmed}:00`;
+
+    const match = trimmed.match(
+      /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i
+    );
+
+    if (!match)
+      return trimmed;
+
+    let hours = Number(match[1]);
+    const minutes = match[2];
+    const period = match[3].toUpperCase();
+
+    if (period === 'AM' && hours === 12)
+      hours = 0;
+
+    if (period === 'PM' && hours !== 12)
+      hours += 12;
+
+    return `${String(hours).padStart(2, '0')}:${minutes}:00`;
   }
 }
