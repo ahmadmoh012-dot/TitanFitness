@@ -1,0 +1,44 @@
+<app-dialog-shell title="Member Check-In" [closeDisabled]="submitting()" (closed)="dismiss()">
+  @if (failure()) {
+  <div class="mb-4">
+    <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+  </div>
+  }
+  @if (sitesFetching()) {
+  <app-loading-state message="Loading check-in..."></app-loading-state>
+  } @else {
+  <form [formGroup]="form" (ngSubmit)="finalizeCheckIn()">
+    <div class="mb-4 mb-lg-4">
+      <app-select-field label="Branch" [control]="form.controls.branchId" [options]="siteChoices()" placeholder="Select branch" [requiredMark]="true" errorMessage="Branch is required."></app-select-field>
+    </div>
+    <div class="mb-4">
+      <app-field-label [requiredMark]="true">Find member</app-field-label>
+      <app-member-picker [members]="members()" [loading]="lookupFetching()" [searched]="lookupDone()" (searchChanged)="lookupMembers($event)" (memberSelected)="pickMember($event)"></app-member-picker>
+    </div>
+    @if (chosenMember()) {
+    <div class="mb-4 mb-lg-4">
+      <app-person-summary-card [name]="chosenMember()!.fullName" [membershipNumber]="chosenMember()!.membershipNumber" [status]="chosenMember()!.status"></app-person-summary-card>
+    </div>
+    }
+    @if (chosenMember() && chosenSiteId()) {
+    <div class="mt-4">
+      @if (eligibilityFetching()) {
+      <div class="border rounded p-4 text-secondary">
+        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+        Checking entry eligibility...
+      </div>
+      } @else if (eligibility()) {
+      <app-entry-verdict [eligibility]="eligibility()!" [branchName]="chosenSiteName()"></app-entry-verdict>
+      }
+    </div>
+    }
+  </form>
+  }
+  <div modal-footer class="d-flex gap-2">
+    <app-button variant="outline-secondary" type="button" [disabled]="submitting()" (clicked)="dismiss()">Cancel</app-button>
+    <app-button variant="primary" type="button" [disabled]="!finalizable()" (clicked)="finalizeCheckIn()">
+      <fa-icon [icon]="checkInGlyph" class="me-2"></fa-icon>
+      {{ submitting() ? 'Recording...' : 'Confirm Check-In' }}
+    </app-button>
+  </div>
+</app-dialog-shell>

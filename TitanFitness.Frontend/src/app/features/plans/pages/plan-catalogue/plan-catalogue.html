@@ -1,0 +1,26 @@
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-4">
+  <app-page-heading title="Plan Catalogue" subtitle="Manage and view all membership plans."></app-page-heading>
+  <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+    <select class="form-select w-auto" aria-label="Access scope" [value]="accessScope()??''" (change)="handleAccessScopeChange($event)">
+      <option value="">All Access Scopes</option>
+      <option [value]="AccessScope.HomeBranchOnly">Home Branch Only</option>
+      <option [value]="AccessScope.AllBranches">All Branches</option>
+    </select>
+    <app-button class="flex-shrink-0 text-nowrap" variant="primary" (clicked)="startNewTier()">
+      <fa-icon [icon]="plusGlyph" class="me-2"></fa-icon>
+      Add Plan
+    </app-button>
+  </div>
+</div>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading plans..."></app-loading-state>
+} @else {
+<app-plan-catalogue-table [plans]="tiers()" [currentPage]="page()" [totalPages]="totalPages()" [totalCount]="totalCount()" [pageSize]="pageSize()" (pageChanged)="handlePageChange($event)" (actionSelected)="handleTierCommand($event)"></app-plan-catalogue-table>
+}

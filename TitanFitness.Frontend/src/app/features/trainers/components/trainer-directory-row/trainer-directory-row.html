@@ -1,0 +1,4 @@
+<td><div class="d-flex align-items-center gap-2"><span class="directory-initials">{{ monogram(trainer().name) }}</span><span class="fw-semibold">{{ trainer().name }}</span></div></td>
+<td>{{ trainer().trainerNumber }}</td><td>{{ trainer().specialty || '—' }}</td><td>{{ trainer().branchName }}</td>
+<td><app-status-chip [status]="state()"></app-status-chip></td>
+<td class="text-end"><app-row-action-menu [actions]="actions()" (actionSelected)="dispatchCommand($event)"></app-row-action-menu></td>

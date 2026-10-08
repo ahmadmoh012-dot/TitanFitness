@@ -1,0 +1,16 @@
+<app-field-label [requiredMark]="requiredMark()">{{ label() }}</app-field-label>
+
+<select class="form-select" [formControl]="control()">
+  <option [ngValue]="null">{{ placeholder() }}</option>
+  @for (choice of options();track choice.value) {
+  <option [ngValue]="choice.value">{{ choice.label }}</option>
+  }
+</select>
+
+@if (helper()) {
+<app-field-message type="helper">{{ helper() }}</app-field-message>
+}
+
+@if (control().touched && control().invalid && errorMessage()) {
+<app-field-message type="error">{{ errorMessage() }}</app-field-message>
+}

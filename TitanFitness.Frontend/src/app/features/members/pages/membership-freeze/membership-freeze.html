@@ -1,0 +1,31 @@
+<div class="mb-4">
+  <app-back-link label="Back to Member Profile" (clicked)="goBack()"></app-back-link>
+</div>
+
+<h2 class="fw-bold mb-1">Freeze Membership</h2>
+
+<p class="text-secondary mb-4">Temporarily suspend a membership contract.</p>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading membership..."></app-loading-state>
+} @else if (member();as currentMember) {
+  @if (membership();as currentMembership) {
+<div class="row g-4">
+  <div class="col-12 col-lg-8">
+    <div class="d-grid gap-3">
+      <app-member-identity-strip [member]="currentMember" [membership]="currentMembership" variant="freeze"></app-member-identity-strip>
+      <app-freeze-options [startDate]="formGroup.controls.startDate" [freezeDurationId]="formGroup.controls.freezeDurationId" [freezeReasonId]="formGroup.controls.freezeReasonId" [notes]="formGroup.controls.notes" [durations]="periodChoices" [reasons]="causeChoices" [minStartDate]="minBeginDate"></app-freeze-options>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <app-freeze-impact [originalEndDate]="currentMembership.endDate" [duration]="chosenPeriod()?.label??'—'" [newEndDate]="projectedFinishDate()" [canConfirm]="formGroup.valid" [saving]="submitting()" (confirm)="finalizePause()" (cancel)="goBack()"></app-freeze-impact>
+  </div>
+</div>
+  }
+}

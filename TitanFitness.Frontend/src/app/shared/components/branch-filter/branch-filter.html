@@ -1,0 +1,6 @@
+<select class="form-select" [ngModel]="selectedBranchId()" (ngModelChange)="propagateChange($event)">
+  <option [ngValue]="null">All Branches</option>
+  @for (site of branches();track site.branchId) {
+  <option [ngValue]="site.branchId">{{ site.name }}</option>
+  }
+</select>

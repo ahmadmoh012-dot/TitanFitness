@@ -1,0 +1,38 @@
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <div class="d-flex align-items-center gap-3">
+    <app-back-link label="" (clicked)="goBack()"></app-back-link>
+    <h2 class="fw-bold mb-0">Member Profile</h2>
+  </div>
+  <app-button variant="outline-secondary" (clicked)="reviseProfile()">Edit Profile</app-button>
+</div>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading member profile..."></app-loading-state>
+} @else if (member();as currentMember) {
+<div class="row g-4">
+  <div class="col-12 col-lg-5 col-xl-4">
+    <div class="d-grid gap-3">
+      <app-member-contact-card [member]="currentMember" [status]="membership()?.status??'No Membership'"></app-member-contact-card>
+      <app-current-plan-card [membership]="membership()" (changePlan)="switchTier()" (freezeMembership)="pauseMembership()" (renewMembership)="renewMembership()"></app-current-plan-card>
+    </div>
+  </div>
+  <div class="col-12 col-lg-7 col-xl-8">
+    @if (usageTiles().length) {
+    <div class="row g-4 mb-4">
+      @for (tile of usageTiles();track tile.title) {
+      <div class="col-12 col-md-6">
+        <app-usage-meter-card [title]="tile.title" [used]="tile.used" [allowed]="tile.allowed" [itemName]="tile.itemName"></app-usage-meter-card>
+      </div>
+      }
+    </div>
+    }
+    <app-activity-feed [activities]="activities()"></app-activity-feed>
+  </div>
+</div>
+}

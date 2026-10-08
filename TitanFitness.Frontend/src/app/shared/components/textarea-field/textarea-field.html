@@ -1,0 +1,7 @@
+<app-field-label [forId]="id()" [requiredMark]="requiredMark()" [optionalText]="optionalText()">{{ label() }}</app-field-label>
+
+<textarea [id]="id()" class="form-control" [rows]="rows()" [placeholder]="placeholder()" [attr.maxlength]="maxLength()" [formControl]="control()"></textarea>
+
+@if (control().touched && control().invalid && errorMessage()) {
+<app-field-message type="error" [marginTop]="false">{{ errorMessage() }}</app-field-message>
+}

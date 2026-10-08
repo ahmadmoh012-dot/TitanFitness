@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-header bg-white py-3">
+    <h5 class="fw-bold mb-0">Freeze Parameters</h5>
+  </div>
+  <div class="card-body">
+    <div class="mb-4">
+      <app-field-label forId="freezeStartDate" [requiredMark]="true">Start Date</app-field-label>
+      <input id="freezeStartDate" type="date" class="form-control" [formControl]="startDate()" [min]="minStartDate()">
+      @if (startDate().touched && startDate().invalid) {
+      <div class="text-danger small mt-1">Start date is required.</div>
+      }
+    </div>
+    <div class="mb-4">
+      <app-field-label [requiredMark]="true">Duration (Months)</app-field-label>
+      <div class="d-flex flex-wrap gap-2">
+        @for (period of durations();track period.id) {
+        <button type="button" class="btn border px-4" [class.border-primary]="freezeDurationId().value === period.id" [class.text-primary]="freezeDurationId().value === period.id" [class.fw-semibold]="freezeDurationId().value === period.id" (click)="pickPeriod(period.id)">
+          {{ period.label }}
+        </button>
+        }
+      </div>
+      @if (freezeDurationId().touched && freezeDurationId().invalid) {
+      <div class="text-danger small mt-1">Freeze duration is required.</div>
+      }
+    </div>
+    <div class="mb-4">
+      <app-field-label forId="freezeReason" [requiredMark]="true">Reason for Freeze</app-field-label>
+      <select id="freezeReason" class="form-select" [formControl]="freezeReasonId()">
+        <option [ngValue]="null">Select a reason</option>
+        @for (cause of reasons();track cause.id) {
+        <option [ngValue]="cause.id">{{ cause.label }}</option>
+        }
+      </select>
+      @if (freezeReasonId().touched && freezeReasonId().invalid) {
+      <div class="text-danger small mt-1">Freeze reason is required.</div>
+      }
+    </div>
+    <div>
+      <app-field-label forId="freezeNotes" optionalText="Optional">Additional Notes</app-field-label>
+      <textarea id="freezeNotes" class="form-control" rows="4" maxlength="200" placeholder="Enter any relevant details..." [formControl]="notes()"></textarea>
+      <div class="form-text">Maximum 200 characters.</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<label [attr.for]="forId()" class="form-label fw-semibold" [class.d-block]="block()">
+  <ng-content></ng-content>
+  @if (requiredMark()) {
+  <span class="text-danger">*</span>
+  }
+  @if (optionalText()) {
+  <span class="text-secondary fw-normal">({{ optionalText() }})</span>
+  }
+</label>

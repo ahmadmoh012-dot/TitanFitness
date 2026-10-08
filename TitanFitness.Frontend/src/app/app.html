@@ -1,0 +1,13 @@
+<div class="d-flex min-vh-100 bg-body-tertiary">
+  <app-side-menu class="d-flex align-self-stretch"></app-side-menu>
+  <div class="d-flex flex-column flex-grow-1 overflow-hidden">
+    <app-top-menu class="border-bottom" [showSearch]="showLookup()" [searchPlaceholder]="lookupPlaceholder()" (searchChanged)="handleLookup($event)"></app-top-menu>
+    <main class="flex-grow-1 p-4 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+@if (checkInOverlay.isOpen()) {
+<app-member-check-in-dialog></app-member-check-in-dialog>
+}

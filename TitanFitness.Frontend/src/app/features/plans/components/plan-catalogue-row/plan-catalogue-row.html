@@ -1,0 +1,8 @@
+<td class="fw-semibold">{{ plan().planName }}</td>
+<td>{{ plan().price | currency:'USD':'symbol':'1.2-2' }}</td>
+<td>{{ periodCaption(plan().durationInMonths) }}</td>
+<td>{{ pauseCaption(plan()) }}</td>
+<td>{{ plan().guestPassQuota }}</td>
+<td>{{ plan().accessScope }}</td>
+<td><app-status-chip [status]="stateCaption(plan())"></app-status-chip></td>
+<td class="text-end"><app-row-action-menu [actions]="actions()" (actionSelected)="dispatchCommand($event)"></app-row-action-menu></td>

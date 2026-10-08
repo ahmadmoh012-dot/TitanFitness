@@ -1,0 +1,13 @@
+<td>
+  <div class="d-flex align-items-center gap-2">
+    <span class="directory-initials">{{ monogram(member().fullName) }}</span>
+    <span class="fw-semibold">{{ member().fullName }}</span>
+  </div>
+</td>
+<td>#{{ member().membershipNumber }}</td>
+<td><app-status-chip [status]="member().status"></app-status-chip></td>
+<td>{{ member().branch }}</td>
+<td>{{ member().lastVisit | visitDate }}</td>
+<td class="text-end">
+  <app-row-action-menu [actions]="actions()" (actionSelected)="dispatchCommand($event)"></app-row-action-menu>
+</td>

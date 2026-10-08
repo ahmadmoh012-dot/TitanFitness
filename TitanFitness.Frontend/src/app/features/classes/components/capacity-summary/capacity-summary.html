@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-header bg-white py-2"><h5 class="mb-0">Capacity Overview</h5></div>
+  <div class="card-body p-4">
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="capacity-stat border p-4 h-100">
+          <fa-icon [icon]="reservationsGlyph" class="capacity-icon"></fa-icon>
+          <div class="capacity-value mt-2">{{ summary().totalBookings }}</div>
+          <div class="small text-secondary">Total Bookings</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="capacity-stat border p-4 h-100">
+          <fa-icon [icon]="fillRateGlyph" class="capacity-icon"></fa-icon>
+          <div class="capacity-value mt-2">{{ summary().averageFillRate|number:'1.0-0' }}%</div>
+          <div class="small text-secondary">Avg Fill Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

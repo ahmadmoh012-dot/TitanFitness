@@ -1,0 +1,11 @@
+<nav class="compact-pager d-flex align-items-center" aria-label="Pagination">
+  <button type="button" class="pager-control" [disabled]="currentPage() === 1" (click)="goToPage(currentPage()-1)" aria-label="Previous page">
+    <fa-icon [icon]="previousGlyph"></fa-icon>
+  </button>
+  @for (page of pageNumbers();track page) {
+    <button type="button" class="pager-control" [class.active]="page === currentPage()" (click)="goToPage(page)">{{ page }}</button>
+  }
+  <button type="button" class="pager-control" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage()+1)" aria-label="Next page">
+    <fa-icon [icon]="nextGlyph"></fa-icon>
+  </button>
+</nav>

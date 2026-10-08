@@ -1,0 +1,10 @@
+<div class="card h-100 dashboard-metric-card">
+  <div class="card-body p-4">
+    <div class="metric-heading d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
+      <span class="text-uppercase">{{ title() }}</span>
+      <fa-icon [icon]="icon()" class="metric-icon"></fa-icon>
+    </div>
+    <div class="metric-value mb-2">{{ value() }}</div>
+    @if (subtitle()) {<span class="metric-subtitle">{{ subtitle() }}</span>}
+  </div>
+</div>

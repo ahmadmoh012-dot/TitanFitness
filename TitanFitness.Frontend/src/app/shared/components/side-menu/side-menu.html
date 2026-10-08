@@ -1,0 +1,26 @@
+<aside id="portalSidebar" class="portal-sidebar offcanvas-md offcanvas-start flex-grow-1 min-vh-100 text-white" tabindex="-1">
+  <div class="sidebar-brand d-flex align-items-center justify-content-between px-3 py-2">
+    <div class="d-flex align-items-center gap-2">
+      <img class="sidebar-logo-img" src="/titan-mark.svg" alt="Titan Fitness logo">
+      <div class="brand-copy">
+        <div class="brand-title">Titan Fitness</div>
+        <small>Staff Portal</small>
+      </div>
+    </div>
+    <button type="button" class="btn btn-light d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#portalSidebar" aria-label="Close menu">
+      <fa-icon [icon]="crossGlyph"></fa-icon>
+    </button>
+  </div>
+  <div class="px-3 py-3">
+    <app-button variant="light" (clicked)="showCheckInDialog()">
+      <fa-icon [icon]="enterGlyph" class="me-2"></fa-icon>New Check-In
+    </app-button>
+  </div>
+  <nav class="d-flex flex-column">
+    @for (item of entries;track item.link) {
+      <a [routerLink]="item.link" routerLinkActive="active-sidebar-link" [routerLinkActiveOptions]="{exact:item.link === '/dashboard'}" data-bs-dismiss="offcanvas" data-bs-target="#portalSidebar" class="sidebar-link d-flex align-items-center gap-3 text-decoration-none px-3 py-3">
+        <fa-icon [icon]="item.icon"></fa-icon><span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+</aside>

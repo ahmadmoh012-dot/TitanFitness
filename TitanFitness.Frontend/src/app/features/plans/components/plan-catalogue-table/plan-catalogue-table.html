@@ -1,0 +1,20 @@
+<div class="card">
+  @if (plans().length === 0) {
+    <app-empty-state title="No plans"></app-empty-state>
+  } @else {
+    <div class="table-responsive">
+      <table class="table directory-table align-middle mb-0">
+        <thead><tr><th>Plan Name</th><th>Price</th><th>Duration</th><th>Freeze Allowance</th><th>Guest Passes</th><th>Access</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+        <tbody>
+          @for (tier of plans();track tier.planId) {
+            <tr app-plan-catalogue-row [plan]="tier" [actions]="commands" (actionSelected)="actionSelected.emit($event)"></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer bg-white d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <span class="small text-secondary">Showing {{ beginEntry() }} to {{ finishEntry() }} of {{ totalCount() }} entries</span>
+      @if (totalPages() > 1) {<app-pager [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChanged)="pageChanged.emit($event)"></app-pager>}
+    </div>
+  }
+</div>

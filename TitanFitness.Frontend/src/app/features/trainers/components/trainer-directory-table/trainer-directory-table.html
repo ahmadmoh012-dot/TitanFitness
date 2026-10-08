@@ -1,0 +1,12 @@
+<div class="card">
+  @if (trainers().length === 0) {<app-empty-state title="No trainers"></app-empty-state>} @else {
+    <div class="table-responsive"><table class="table directory-table align-middle mb-0">
+      <thead><tr><th>Trainer Name</th><th>ID</th><th>Specialty</th><th>Branch</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>@for (coach of trainers();track coach.trainerId) {<tr app-trainer-directory-row [trainer]="coach" [actions]="commands" (actionSelected)="actionSelected.emit($event)"></tr>}</tbody>
+    </table></div>
+    <div class="card-footer bg-white d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <span class="small text-secondary">Showing {{ beginEntry() }} to {{ finishEntry() }} of {{ totalCount() }} entries</span>
+      @if (totalPages() > 1) {<app-pager [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChanged)="pageChanged.emit($event)"></app-pager>}
+    </div>
+  }
+</div>

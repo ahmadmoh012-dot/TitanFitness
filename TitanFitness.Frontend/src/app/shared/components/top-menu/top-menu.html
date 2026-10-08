@@ -1,0 +1,20 @@
+<header class="portal-topbar bg-white border-bottom px-3 px-md-4 py-2">
+  <div class="d-flex align-items-center gap-3">
+    <button type="button" class="btn btn-light d-md-none" data-bs-toggle="offcanvas" data-bs-target="#portalSidebar" aria-controls="portalSidebar" aria-label="Open menu">
+      <fa-icon [icon]="barsGlyph"></fa-icon>
+    </button>
+    <div class="flex-grow-1">
+      @if (showSearch()) {
+        <div class="input-group top-bar-search">
+          <span class="input-group-text bg-white"><fa-icon [icon]="magnifierGlyph"></fa-icon></span>
+          <input type="search" class="form-control" [value]="lookupText()" [placeholder]="searchPlaceholder()" (input)="handleLookup($any($event.target).value)">
+        </div>
+      }
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      @for (item of commands;track item.label) {
+        <app-button class="top-bar-action" variant="link" [attr.aria-label]="item.label"><fa-icon [icon]="item.icon"></fa-icon></app-button>
+      }
+    </div>
+  </div>
+</header>

@@ -1,0 +1,24 @@
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-4">
+  <app-page-heading title="Class Schedule" subtitle="Manage and monitor today\'s sessions."></app-page-heading>
+  <app-schedule-toolbar [branches]="sites()" [branchId]="siteId()" [date]="date()" (branchChanged)="handleSiteChange($event)" (dateChanged)="handleDateChange($event)" (addClass)="startNewClass()"></app-schedule-toolbar>
+</div>
+
+@if (failure()) {<div class="mb-4"><app-feedback-banner type="error" [message]="failure()"></app-feedback-banner></div>}
+
+@if (fetching()) {
+  <app-loading-state message="Loading class schedule..."></app-loading-state>
+} @else {
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <app-session-list [sessions]="lessons()" [totalCount]="totalCount()" [bookingMode]="reservationMode()" (bookRequested)="pickReservationLesson($event)"></app-session-list>
+      @if (totalPages() > 1) {
+        <div class="d-flex justify-content-end mt-4"><app-pager [currentPage]="page()" [totalPages]="totalPages()" (pageChanged)="handlePageChange($event)"></app-pager></div>
+      }
+    </div>
+    <div class="col-12 col-lg-4"><app-capacity-summary [summary]="rollup()"></app-capacity-summary></div>
+  </div>
+}
+
+@if (showLessonDialog()) {
+  <app-session-create-dialog [branches]="sites()" [defaultBranchId]="siteId()" [defaultDate]="date()" (closed)="dismissLessonDialog()" (created)="handleClassCreated($event)"></app-session-create-dialog>
+}

@@ -1,0 +1,28 @@
+<app-page-heading title="Dashboard" subtitle="Live floor statistics and quick actions."></app-page-heading>
+
+@if (fetching()) {
+<app-loading-state></app-loading-state>
+} @else {
+  @if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+  }
+<div class="row g-4">
+  <div class="col-12 col-xl-8">
+    <div class="row g-4">
+      @for (stat of figures();track stat.title) {
+      <div class="col-12 col-md-6">
+        <app-metric-card [title]="stat.title" [value]="stat.value" [subtitle]="stat.subtitle" [icon]="stat.icon"></app-metric-card>
+      </div>
+      }
+    </div>
+    <div class="mt-4">
+      <app-upcoming-session-list [classes]="upcomingClasses()" (viewSchedule)="goToSchedule()"></app-upcoming-session-list>
+    </div>
+  </div>
+  <div class="col-12 col-xl-4">
+    <app-action-shortcuts (actionSelected)="handleQuickCommand($event)"></app-action-shortcuts>
+  </div>
+</div>
+}

@@ -1,0 +1,18 @@
+@if (members().length === 0) {
+  <app-empty-state title="No members"></app-empty-state>
+} @else {
+  <div class="table-responsive">
+    <table class="table directory-table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Member Name</th><th>ID</th><th>Status</th><th>Branch</th><th>Last Visit</th><th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (member of members();track member.memberId) {
+          <tr app-member-directory-row [member]="member" [actions]="commands" (actionSelected)="actionSelected.emit($event)"></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

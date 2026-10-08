@@ -1,0 +1,68 @@
+<div class="mb-4">
+  <app-back-link [label]="inEditMode() ? 'Back to Member Profile':'Back to Members'" (clicked)="goBack()"></app-back-link>
+</div>
+
+<div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+  <h2 class="fw-bold mb-0">{{ inEditMode() ? (form.controls.fullName.value||'Edit Member') : 'New Member' }}</h2>
+  <app-mode-chip [mode]="inEditMode() ? 'edit':'add'"></app-mode-chip>
+</div>
+
+<p class="text-secondary mb-4">{{ inEditMode() ? "Correct the member's own details.":'Register a new member and assign their home branch.' }}</p>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading member..."></app-loading-state>
+} @else {
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="card">
+    <div class="card-header bg-white py-3 px-3 px-md-4">
+      <h5 class="fw-bold mb-0">Member Details</h5>
+    </div>
+    <div class="card-body p-4 p-md-4">
+      <div class="row g-4">
+        <div class="col-12 col-lg-3 col-xl-2">
+          <div class="photo-upload-box rounded overflow-hidden mx-auto" role="button" tabindex="0" (click)="photoInput.click()" (keydown.enter)="photoInput.click()" (keydown.space)="photoInput.click();$event.preventDefault()">
+            <div class="ratio ratio-1x1 bg-secondary-subtle">
+              <app-profile-photo [photo]="form.controls.photo.value" [alt]="form.controls.fullName.value || 'Member photo'"></app-profile-photo>
+            </div>
+          </div>
+          <input #photoInput type="file" accept="image/*" class="d-none" (change)="handlePhotoChosen($event)">
+          <div class="small text-secondary text-center mt-2">{{ form.controls.photo.value ? 'Replace photo' : 'Upload photo' }}</div>
+        </div>
+        <div class="col-12 col-lg-9 col-xl-10">
+          <div class="row g-4">
+            @for (field of fields();track field.label) {
+            <div [class]="field.col">
+              <app-text-field [label]="field.label" [control]="field.control" [type]="field.type" [placeholder]="field.placeholder" [helper]="field.helper" [requiredMark]="field.requiredMark" [readonly]="field.readonly" [errorMessage]="field.errorMessage"></app-text-field>
+            </div>
+            }
+            <div class="col-12 col-md-6">
+              <app-select-field label="Home Branch" [control]="form.controls.homeBranchId" [options]="siteChoices()" placeholder="Select branch" [requiredMark]="true" errorMessage="Home branch is required."></app-select-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <app-info-banner>
+          @if (inEditMode()) {
+          Editing a profile changes the member's own details only. It never touches the membership they hold, its dates, its status or the terms it was sold under.
+          } @else {
+          Creating a member does not grant access on its own. Assign a plan afterwards from the member profile to issue an active membership.
+          }
+        </app-info-banner>
+      </div>
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-end gap-2 py-3 px-3 px-md-4">
+      <app-button variant="light" type="button" [disabled]="submitting()" (clicked)="abort()">Cancel</app-button>
+      <app-button variant="primary" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Saving...' : inEditMode() ? 'Save Changes' : 'Save Member' }}
+      </app-button>
+    </div>
+  </div>
+</form>
+}

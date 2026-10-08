@@ -1,0 +1,68 @@
+<app-back-link label="Back to list" (clicked)="goBack()"></app-back-link>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mt-4 mb-4">
+  <div>
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+      <h2 class="fw-bold mb-0">{{ heading() }}</h2>
+      <app-mode-chip [mode]="badgeMode()"></app-mode-chip>
+    </div>
+    <p class="text-secondary mb-0">{{ subheading() }}</p>
+  </div>
+  @if (mode() === 'view' && coach()) {
+  <app-button variant="primary" (clicked)="reviseCoach()">
+    <fa-icon [icon]="reviseGlyph" class="me-2"></fa-icon>
+    Edit Trainer
+  </app-button>
+  }
+</div>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading trainer..."></app-loading-state>
+} @else if (mode() === 'create' || coach()) {
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="card">
+    <div class="card-header bg-white py-3">
+      <h5 class="fw-bold mb-0">Trainer Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        @for (field of fields;track field.key) {
+        <div class="col-12 col-md-6">
+          @if (field.kind === 'branch') {
+          <app-select-field [label]="field.label" [control]="form.controls.branchId" [options]="siteChoices()" placeholder="Select a branch" [requiredMark]="true" errorMessage="Branch is required."></app-select-field>
+          } @else if (field.kind === 'status') {
+          <app-field-label>{{ field.label }}</app-field-label>
+          <div class="form-check">
+            <input id="trainerIsActive" type="checkbox" class="form-check-input" [formControl]="form.controls.isActive">
+            <label for="trainerIsActive" class="form-check-label">IsActive</label>
+          </div>
+          <app-field-message type="helper">Ticked means true, unticked means false.</app-field-message>
+          } @else {
+          <app-text-field [label]="field.label" [type]="field.type" [control]="form.controls[field.control]" [placeholder]="field.placeholder" [requiredMark]="field.requiredMark" [errorMessage]="field.errorMessage"></app-text-field>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  @if (mode() !== 'view') {
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <app-button variant="outline-secondary" type="button" [disabled]="submitting()" (clicked)="abort()">Cancel</app-button>
+    <app-button variant="primary" type="submit" [disabled]="submitting()">
+      <fa-icon [icon]="submitGlyph" class="me-2"></fa-icon>
+      @if (mode() === 'create') {
+      {{ submitting() ? 'Saving...' : 'Save Trainer' }}
+      } @else {
+      {{ submitting() ? 'Saving...' : 'Save Changes' }}
+      }
+    </app-button>
+  </div>
+  }
+</form>
+}

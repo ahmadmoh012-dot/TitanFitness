@@ -1,0 +1,11 @@
+<app-field-label [requiredMark]="requiredMark()">{{ label() }}</app-field-label>
+
+<input [type]="type()" class="form-control" [formControl]="control()" [placeholder]="placeholder()" [readonly]="readonly()" [attr.min]="min()" [attr.step]="step()">
+
+@if (helper()) {
+<app-field-message type="helper">{{ helper() }}</app-field-message>
+}
+
+@if (control().touched && control().invalid && errorMessage()) {
+<app-field-message type="error" [marginTop]="false">{{ errorMessage() }}</app-field-message>
+}

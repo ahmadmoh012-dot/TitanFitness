@@ -1,0 +1,18 @@
+<div>
+  <app-field-label forId="memberSearch">Select Member</app-field-label>
+  <div class="input-group member-search-box">
+    <span class="input-group-text bg-white"><fa-icon [icon]="lookupGlyph"></fa-icon></span>
+    <input id="memberSearch" type="search" class="form-control" placeholder="Search by name or ID..." [formControl]="lookupControl">
+  </div>
+  @if (loading()) {
+    <div class="small text-secondary mt-2">Searching...</div>
+  } @else if (searched() && members().length === 0) {
+    <app-empty-state class="d-block mt-2" title="No members found" [compact]="true"></app-empty-state>
+  } @else if (members().length > 0) {
+    <div class="d-grid gap-2 mt-2">
+      @for (member of members();track member.memberId) {
+        <app-person-summary-card [name]="member.fullName" [membershipNumber]="member.membershipNumber" [status]="member.status" [selectable]="true" [showInitials]="true" (selected)="memberSelected.emit(member)"></app-person-summary-card>
+      }
+    </div>
+  }
+</div>

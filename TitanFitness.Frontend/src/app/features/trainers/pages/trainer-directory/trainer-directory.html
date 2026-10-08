@@ -1,0 +1,22 @@
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-4">
+  <app-page-heading title="Trainer Directory" subtitle="Manage and view all trainers."></app-page-heading>
+  <div class="d-flex flex-column flex-sm-row gap-2">
+    <app-branch-filter [branches]="sites()" [selectedBranchId]="siteId()" (branchChanged)="handleSiteChange($event)"></app-branch-filter>
+    <app-button variant="primary" (clicked)="startNewCoach()">
+      <fa-icon [icon]="plusGlyph" class="me-2"></fa-icon>
+      Add Trainer
+    </app-button>
+  </div>
+</div>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading trainers..."></app-loading-state>
+} @else {
+<app-trainer-directory-table [trainers]="coaches()" [currentPage]="page()" [totalPages]="totalPages()" [totalCount]="totalCount()" [pageSize]="pageSize()" (pageChanged)="handlePageChange($event)" (actionSelected)="handleCoachCommand($event)"></app-trainer-directory-table>
+}

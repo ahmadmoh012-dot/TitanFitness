@@ -1,0 +1,52 @@
+<app-back-link label="Back to list" (clicked)="goBack()"></app-back-link>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mt-4 mb-4">
+  <div>
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+      <h2 class="fw-bold mb-0">{{ heading() }}</h2>
+      <app-mode-chip [mode]="badgeMode()"></app-mode-chip>
+    </div>
+    <p class="text-secondary mb-0">{{ subheading() }}</p>
+  </div>
+  @if (mode() === 'view' && tier()) {
+  <app-button variant="primary" (clicked)="reviseTier()">
+    <fa-icon [icon]="reviseGlyph" class="me-2"></fa-icon>
+    Edit Plan
+  </app-button>
+  }
+</div>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading plan..."></app-loading-state>
+} @else if (mode() === 'create' || tier()) {
+<form [formGroup]="form" (ngSubmit)="save()">
+  @if (mode() === 'edit' && tier()) {
+  <div class="mb-4 mb-lg-4">
+    <app-feedback-banner type="warning" [message]="'Changes to this plan apply to new purchases only. ' + tier()!.activeMembershipsCount + ' active memberships keep the terms they were sold.'"></app-feedback-banner>
+  </div>
+  }
+  <div class="mb-4 mb-lg-4">
+    <app-plan-core-form [form]="form" [viewMode]="mode() === 'view'"></app-plan-core-form>
+  </div>
+  <app-plan-benefits-form [form]="form" [viewMode]="mode() === 'view'"></app-plan-benefits-form>
+  @if (mode() !== 'view') {
+  <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
+    <app-button variant="light" type="button" [disabled]="submitting()" (clicked)="abort()">Cancel</app-button>
+    <app-button variant="primary" type="submit" [disabled]="submitting()">
+      <fa-icon [icon]="submitGlyph" class="me-2"></fa-icon>
+      @if (mode() === 'create') {
+      {{ submitting() ? 'Saving...' : 'Save Plan' }}
+      } @else {
+      {{ submitting() ? 'Saving...' : 'Save Changes' }}
+      }
+    </app-button>
+  </div>
+  }
+</form>
+}

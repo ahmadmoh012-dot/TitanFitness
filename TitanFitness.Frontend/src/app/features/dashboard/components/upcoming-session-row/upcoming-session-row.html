@@ -1,0 +1,19 @@
+<div class="upcoming-class-row d-flex justify-content-between align-items-center gap-3 px-3 py-3 border-bottom">
+  <div class="d-flex align-items-start gap-3">
+    <div class="text-center class-time">
+      <div class="fw-bold">{{ session().startTime | time12Hour:'time' }}</div>
+      <div class="small text-secondary">{{ session().startTime | time12Hour:'period' }}</div>
+    </div>
+    <div>
+      <div class="upcoming-class-name mb-1">{{ session().className }}</div>
+      <div class="d-flex flex-wrap gap-2 text-secondary small">
+        <span><fa-icon [icon]="locationGlyph" class="me-1"></fa-icon>{{ session().studioName }}</span>
+        <span><fa-icon [icon]="coachGlyph" class="me-1"></fa-icon>{{ session().trainerName }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="class-meta d-flex align-items-center gap-3">
+    <span class="text-secondary small"><fa-icon [icon]="peopleGlyph" class="me-1"></fa-icon>{{ session().bookedCount }}/{{ session().capacityLimit }} Enrolled</span>
+    <app-status-chip [status]="session().status"></app-status-chip>
+  </div>
+</div>

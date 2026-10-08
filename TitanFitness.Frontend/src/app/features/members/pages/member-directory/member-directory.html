@@ -1,0 +1,36 @@
+<app-page-heading title="Member Directory" subtitle="View and manage members across all branches."></app-page-heading>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+<div class="d-flex flex-column flex-md-row justify-content-end align-items-md-center gap-3 mb-4">
+  <div class="col-12 col-md-4 col-lg-3">
+    <app-branch-filter [branches]="sites()" [selectedBranchId]="siteId()" (branchChanged)="handleSiteChange($event)"></app-branch-filter>
+  </div>
+  <app-button variant="primary" (clicked)="startNewMember()">+ Add Member</app-button>
+</div>
+
+@if (fetching()) {
+<app-loading-state message="Loading members..."></app-loading-state>
+} @else {
+<section class="card">
+  <div class="card-body p-0">
+    <app-member-directory-table [members]="members()" (actionSelected)="handleMemberCommand($event)"></app-member-directory-table>
+  </div>
+
+  @if (totalCount() > 0) {
+  <div class="card-footer bg-white py-3 px-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
+      <small class="text-secondary">Showing {{ beginEntry() }} to {{ finishEntry() }} of {{ totalCount() }} entries</small>
+
+      @if (totalPages() > 1) {
+      <app-pager [currentPage]="page()" [totalPages]="totalPages()" (pageChanged)="handlePageChange($event)"></app-pager>
+      }
+    </div>
+  </div>
+  }
+</section>
+}

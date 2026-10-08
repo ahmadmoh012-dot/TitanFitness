@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+    <h5 class="mb-0">Today's Sessions</h5>
+    <span class="class-count-badge">{{ totalCount() }} Classes</span>
+  </div>
+  @if (sessions().length === 0) {
+    <app-empty-state title="No classes scheduled"></app-empty-state>
+  } @else {
+    <div>
+      @for (lesson of sessions();track lesson.sessionId) {
+        <app-session-list-row [session]="lesson" [bookingMode]="bookingMode()" (bookRequested)="bookRequested.emit($event)"></app-session-list-row>
+      }
+    </div>
+  }
+</div>

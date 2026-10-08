@@ -1,0 +1,48 @@
+<app-back-link label="Back to Member Profile" (clicked)="goBack()"></app-back-link>
+
+<div class="d-flex flex-wrap align-items-center gap-2 mt-4">
+  <h2 class="fw-bold mb-0">Change Membership Plan</h2>
+  <app-mode-chip mode="edit"></app-mode-chip>
+</div>
+
+<p class="text-secondary mt-1 mb-4">Move a member onto a different plan. New terms are copied from the plan and fixed at purchase.</p>
+
+@if (failure()) {
+<div class="mb-4">
+  <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+</div>
+}
+
+@if (fetching()) {
+<app-loading-state message="Loading membership..."></app-loading-state>
+} @else if (member();as currentMember) {
+  @if (membership();as currentMembership) {
+<div class="mb-4">
+  <app-member-identity-strip [member]="currentMember" [membership]="currentMembership" variant="change-plan"></app-member-identity-strip>
+</div>
+
+<div class="row g-4">
+  <div class="col-12 col-lg-8">
+    <div class="d-grid gap-3">
+      <app-current-membership-panel [membership]="currentMembership"></app-current-membership-panel>
+      <div class="card">
+        <div class="card-header bg-white py-3">
+          <span class="fw-semibold">New Plan</span>
+        </div>
+        <div class="card-body">
+          <app-plan-choice [plans]="tiers()" [selectedPlanId]="chosenTierId()" (selectedPlanIdChange)="pickTier($event)"></app-plan-choice>
+          <app-switch-timing-options [mode]="effectiveMode()" [startDate]="newBeginDate()" (modeChange)="switchTiming($event)"></app-switch-timing-options>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    @if (previewFetching()) {
+    <app-loading-state message="Loading plan terms..."></app-loading-state>
+    } @else {
+    <app-membership-terms-preview [plan]="chosenTier()" [newEndDate]="newFinishDate()" [saving]="submitting()" (confirm)="finalizeChange()" (cancel)="goBack()"></app-membership-terms-preview>
+    }
+  </div>
+</div>
+  }
+}

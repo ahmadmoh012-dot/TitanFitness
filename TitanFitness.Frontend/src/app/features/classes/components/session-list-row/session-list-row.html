@@ -1,0 +1,30 @@
+<div class="session-row px-3 py-3 border-bottom">
+  <div class="row align-items-center g-4">
+    <div class="col-auto">
+      <div class="session-time text-center">
+        <div class="fw-bold">{{ session().startTime | time12Hour:'time' }}</div>
+        <small>{{ session().startTime | time12Hour:'period' }}</small>
+      </div>
+    </div>
+    <div class="col">
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+        <span class="session-name">{{ session().className }}</span>
+        @if (session().status === 'In Progress') {<app-status-chip [status]="session().status"></app-status-chip>}
+      </div>
+      <div class="d-flex flex-wrap gap-3 small text-secondary">
+        <app-icon-label [icon]="coachGlyph">{{ session().trainerName }}</app-icon-label>
+        <app-icon-label [icon]="roomGlyph">{{ session().studioName }}</app-icon-label>
+      </div>
+    </div>
+    <div class="col-12 col-sm-4 col-lg-3">
+      <div class="text-end small fw-semibold mb-1">{{ session().bookedCount }} / {{ session().capacityLimit }}</div>
+      <div class="progress session-progress"><div class="progress-bar" [style.width.%]="fillPct()"></div></div>
+      @if (session().waitlistCount > 0) {<div class="text-end small text-secondary mt-1">Waitlist: {{ session().waitlistCount }}</div>}
+    </div>
+    @if (bookable()) {
+      <div class="col-12 col-md-auto text-md-end">
+        <app-button variant="primary" (clicked)="bookRequested.emit(session().sessionId)">Book Session</app-button>
+      </div>
+    }
+  </div>
+</div>

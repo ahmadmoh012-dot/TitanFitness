@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-9 col-xl-7">
+    @if (failure()) {
+    <div class="mb-4">
+      <app-feedback-banner type="error" [message]="failure()"></app-feedback-banner>
+    </div>
+    }
+    @if (fetching()) {
+    <app-loading-state message="Loading booking..."></app-loading-state>
+    } @else if (lesson()) {
+    <form [formGroup]="form" (ngSubmit)="finalizeReservation()">
+      <div class="card border shadow-sm">
+        <div class="card-body p-4">
+          <app-session-summary-card [session]="lesson()!"></app-session-summary-card>
+          <div class="mt-4">
+            <app-member-picker [members]="members()" [loading]="lookupFetching()" [searched]="lookupDone()" (searchChanged)="lookupMembers($event)" (memberSelected)="pickMember($event)"></app-member-picker>
+          </div>
+          @if (chosenMember()) {
+          <div class="mt-2">
+            <app-person-summary-card [name]="chosenMember()!.fullName" [membershipNumber]="chosenMember()!.membershipNumber" [status]="chosenMember()!.status"></app-person-summary-card>
+          </div>
+          }
+          <div class="mt-4">
+            <app-textarea-field id="bookingNotes" label="Special Requirements / Notes" optionalText="Optional" [control]="form.controls.trainerNotes" placeholder="e.g., Recovering from mild shoulder injury" [rows]="3" [maxLength]="500" errorMessage="Notes cannot exceed 500 characters."></app-textarea-field>
+          </div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-end gap-2 p-4">
+          <app-button variant="outline-secondary" type="button" [disabled]="submitting()" (clicked)="abort()">Cancel</app-button>
+          <app-button variant="primary" type="submit" [disabled]="!finalizable()">{{ submitting() ? 'Booking...' : 'Confirm Booking' }}</app-button>
+        </div>
+      </div>
+    </form>
+    }
+  </div>
+</div>

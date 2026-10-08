@@ -1,0 +1,12 @@
+<div class="member-search-result d-flex align-items-center justify-content-between gap-3" [class.member-search-result-selectable]="selectable()" [attr.role]="selectable() ? 'button' : null" [attr.tabindex]="selectable() ? 0 : null" (click)="chooseOption()" (keydown.enter)="chooseOption()" (keydown.space)="chooseOption()">
+  <div class="d-flex align-items-center gap-3 min-w-0">
+    @if (showInitials()) {
+      <span class="member-initials flex-shrink-0">{{ monogram() }}</span>
+    }
+    <div class="min-w-0">
+      <div class="member-result-name text-truncate">{{ name() }}</div>
+      <div class="member-result-id">ID: {{ membershipNumber() }}</div>
+    </div>
+  </div>
+  <app-status-chip [status]="status()"></app-status-chip>
+</div>
